@@ -2,24 +2,39 @@ let bookshelf = [];
 
 const addNewBook = () => {
   const addNewBookHeader = "เพิ่มหนังสือใหม่";
-  const bookName = prompt(addNewBookHeader + "\nกรุณากรอก ชื่อหนังสือ");
+  const name = prompt(addNewBookHeader + "\nกรุณากรอก ชื่อหนังสือ");
   const auther = prompt(addNewBookHeader + "\nกรุณากรอก ผู้เขียน");
   const year = prompt(addNewBookHeader + "\nกรุณากรอก ปีที่พิมพ์");
   const price = prompt(addNewBookHeader + "\nกรุณากรอก ราคา");
 
   const confirmation = confirm(
-    `คุณต้องการเพิ่มหนังสือ \nชื่อ: ${bookName} \nโดย: ${auther} \nของปี: ${year} \nราตา: ${price}`
+    `คุณต้องการเพิ่มหนังสือ \nชื่อ: ${name} \nโดย: ${auther} \nของปี: ${year} \nราตา: ${price}`
   );
 
   if (confirmation) {
     const packData = {
-      bookName: bookName,
+      id: bookshelf.length,
+      name: name,
       auther: auther,
       year: year,
       price: price,
     };
 
     bookshelf = [...bookshelf, packData];
+  }
+
+  main();
+};
+
+const viewAllBook = () => {
+  if (bookshelf.length !== 0) {
+    const bookList = bookshelf.map((book) => {
+      return `\nรหัส: ${book.id} ชื่อ: ${book.name} โดย: ${book.auther} ของปี: ${book.year} ราตา: ${book.price}`;
+    });
+
+    alert("รายการหนังสือทั้งหมดในระบบมีดังนี้" + bookList);
+  } else {
+    alert("ยังไม่มีรายการหนังสือในระบบ");
   }
 
   main();
@@ -33,6 +48,10 @@ const main = () => {
   switch (mainOption) {
     case "1": {
       addNewBook();
+      break;
+    }
+    case "2": {
+      viewAllBook();
       break;
     }
     default: {
