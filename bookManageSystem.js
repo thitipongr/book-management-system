@@ -1,19 +1,4 @@
-let bookshelf = [
-  {
-    id: 0,
-    name: "mock#1-name",
-    auther: "mock#1-auther",
-    year: "mock#1-year",
-    price: "mock#1-price",
-  },
-  {
-    id: 1,
-    name: "mock#2-name",
-    auther: "mock#2-auther",
-    year: "mock#2-year",
-    price: "mock#2-price",
-  },
-];
+let bookshelf = [];
 
 const addNewBook = () => {
   const addNewBookHeader = "เพิ่มหนังสือใหม่";
@@ -28,14 +13,14 @@ const addNewBook = () => {
 
   if (confirmation) {
     const packData = {
-      id: bookshelf.length,
+      id: Number(bookshelf.length ? bookshelf.at(-1).id : 0) + 1,
       name: name,
       auther: auther,
       year: year,
       price: price,
     };
 
-    bookshelf = [...bookshelf, packData];
+    bookshelf.push(packData);
   }
 
   main();
@@ -43,13 +28,15 @@ const addNewBook = () => {
 
 const viewAllBook = () => {
   if (bookshelf.length !== 0) {
-    const bookList = bookshelf.map((book) => {
-      return `\nรหัส: ${book.id} ชื่อ: ${book.name} โดย: ${book.auther} ของปี: ${book.year} ราตา: ${book.price}`;
+    let bookList = "";
+
+    bookshelf.forEach((book) => {
+      bookList += `\nรหัส: ${book.id} ชื่อ: ${book.name} โดย: ${book.auther} ของปี: ${book.year} ราตา: ${book.price}`;
     });
 
     alert("รายการหนังสือทั้งหมดในระบบมีดังนี้" + bookList);
   } else {
-    alert("ยังไม่มีรายการหนังสือในระบบ");
+    alert("ยังไม่มีรายการหนังสือใด ๆ ในระบบ");
   }
 
   main();
@@ -57,8 +44,10 @@ const viewAllBook = () => {
 
 const editExistingBook = () => {
   if (bookshelf.length !== 0) {
-    const bookList = bookshelf.map((book, index) => {
-      return `\n (${index + 1}) รหัส: ${book.id} ชื่อ: ${book.name} โดย: ${
+    let bookList = "";
+
+    bookshelf.forEach((book, index) => {
+      bookList += `\n (${index + 1}) รหัส: ${book.id} ชื่อ: ${book.name} โดย: ${
         book.auther
       } ของปี: ${book.year} ราตา: ${book.price}`;
     });
@@ -67,46 +56,89 @@ const editExistingBook = () => {
       "กรุณากรอก รหัสหนังสือ ที่ต้องการแก้ไขจากรายการ" + bookList
     );
 
-    if (bookId !== null) {
+    if (bookId !== "") {
       const fineEditBookIndex = bookshelf.findIndex((book) => {
         return book.id == bookId;
       });
 
-      const editBookHeader = "แก้ไขข้อมูลหนังสือ";
+      const editBookHeader = "แก้ไขข้อมูลหนังสือ\n";
 
       const newName = prompt(
         editBookHeader +
-          `กรุณากรอก ชื่อหนังสือใหม่ (เดิม: ${bookshelf[fineEditBookIndex].name})`
+          `กรุณากรอก ชื่อหนังสือใหม่ (เดิม: ${bookshelf[fineEditBookIndex].name})`,
+        bookshelf[fineEditBookIndex].name
       );
       const newAuther = prompt(
         editBookHeader +
-          `กรุณากรอก ผู้เขียนใหม่ (เดิม: ${bookshelf[fineEditBookIndex].auther})`
+          `กรุณากรอก ผู้เขียนใหม่ (เดิม: ${bookshelf[fineEditBookIndex].auther})`,
+        bookshelf[fineEditBookIndex].auther
       );
       const newYear = prompt(
         editBookHeader +
-          `กรุณากรอก ปีที่พิมพ์ใหม่ (เดิม: ${bookshelf[fineEditBookIndex].year})`
+          `กรุณากรอก ปีที่พิมพ์ใหม่ (เดิม: ${bookshelf[fineEditBookIndex].year})`,
+        bookshelf[fineEditBookIndex].year
       );
       const newPrice = prompt(
         editBookHeader +
-          `กรุณากรอก ราคาใหม่ (เดิม: ${bookshelf[fineEditBookIndex].price})`
+          `กรุณากรอก ราคาใหม่ (เดิม: ${bookshelf[fineEditBookIndex].price})`,
+        bookshelf[fineEditBookIndex].price
       );
 
       const editConfirm = confirm(
-        `ยืนยันการแก้ไขข้อมูลของหนังสือรหัส: ${bookshelf[fineEditBookIndex].id} โดย\nชื่อหนังสือใหม่: ${newName} (เดิม: ${bookshelf[fineEditBookIndex].name})\n ผู้เขียนใหม่: ${newAuther} (เดิม: ${bookshelf[fineEditBookIndex].auther})\nปีที่พิมพ์ใหม่: ${newYear} (เดิม: ${bookshelf[fineEditBookIndex].year})\nราคาใหม่: ${newPrice} (เดิม: ${bookshelf[fineEditBookIndex].price})`
+        `ยืนยันการแก้ไขข้อมูลของหนังสือรหัส: ${bookshelf[fineEditBookIndex].id} โดย \nชื่อหนังสือใหม่: ${newName} (เดิม: ${bookshelf[fineEditBookIndex].name}) \nผู้เขียนใหม่: ${newAuther} (เดิม: ${bookshelf[fineEditBookIndex].auther}) \nปีที่พิมพ์ใหม่: ${newYear} (เดิม: ${bookshelf[fineEditBookIndex].year}) \nราคาใหม่: ${newPrice} (เดิม: ${bookshelf[fineEditBookIndex].price})`
       );
 
       if (editConfirm) {
-        bookshelf[fineEditBookIndex] = {
-          id: fineEditBookIndex,
+        const packData = {
+          id: bookId,
           name: newName,
           auther: newAuther,
           year: newYear,
           price: newPrice,
         };
+
+        bookshelf.splice(fineEditBookIndex, 1, packData);
       }
     }
   } else {
-    alert("ยังไม่มีรายการหนังสือในระบบ");
+    alert("ยังไม่มีรายการหนังสือใด ๆ ในระบบ");
+  }
+
+  main();
+};
+
+const deleteExistingBook = () => {
+  if (bookshelf.length !== 0) {
+    let bookList = "";
+
+    bookshelf.forEach((book, index) => {
+      bookList += `\n (${index + 1}) รหัส: ${book.id} ชื่อ: ${book.name} โดย: ${
+        book.auther
+      } ของปี: ${book.year} ราตา: ${book.price}`;
+    });
+
+    const bookId = prompt(
+      "กรุณากรอก รหัสหนังสือ ที่ต้องการแก้ไขจากรายการ" + bookList
+    );
+
+    if (bookId !== "") {
+      const fineDeleteBookIndex = bookshelf.findIndex((book) => {
+        return book.id == bookId;
+      });
+
+      const deleteBookHeader = "ลบข้อมูลหนังสือ\n";
+
+      const deleteConfirm = confirm(
+        deleteBookHeader +
+          `ยืนยันการลบข้อมูลของหนังสือรหัส: ${bookshelf[fineDeleteBookIndex].id} ที่ \nชื่อหนังสือ: ${bookshelf[fineDeleteBookIndex].name} \nผู้เขียน: ${bookshelf[fineDeleteBookIndex].auther} \nปีที่พิมพ์: ${bookshelf[fineDeleteBookIndex].year} \nราคา: ${bookshelf[fineDeleteBookIndex].price}`
+      );
+
+      if (deleteConfirm) {
+        bookshelf.splice(fineDeleteBookIndex, 1);
+      }
+    }
+  } else {
+    alert("ยังไม่มีรายการหนังสือใด ๆ ในระบบ");
   }
 
   main();
@@ -130,7 +162,12 @@ const main = () => {
       editExistingBook();
       break;
     }
+    case "4": {
+      deleteExistingBook();
+      break;
+    }
     case "00": {
+      location.reload();
       break;
     }
     default: {
