@@ -2,13 +2,48 @@ let bookshelf = [];
 
 const addNewBook = () => {
   const addNewBookHeader = "เพิ่มหนังสือใหม่";
-  const name = prompt(addNewBookHeader + "\nกรุณากรอก ชื่อหนังสือ");
-  const auther = prompt(addNewBookHeader + "\nกรุณากรอก ผู้เขียน");
-  const year = prompt(addNewBookHeader + "\nกรุณากรอก ปีที่พิมพ์");
-  const price = prompt(addNewBookHeader + "\nกรุณากรอก ราคา");
+  let name = prompt(addNewBookHeader + "\nกรุณากรอก ชื่อหนังสือ");
+  if (name !== null) {
+    while (name === "") {
+      alert("จำเป็นต้องกรอก ชื่อหนังสือ");
+      name = prompt(addNewBookHeader + "\nกรุณากรอก ชื่อหนังสือ");
+    }
+  } else {
+    main();
+  }
+
+  let auther = prompt(addNewBookHeader + "\nกรุณากรอก ผู้เขียน");
+  if (auther !== null) {
+    while (auther === "") {
+      alert("จำเป็นต้องกรอก ผู้เขียน");
+      auther = prompt(addNewBookHeader + "\nกรุณากรอก ผู้เขียน");
+    }
+  } else {
+    main();
+  }
+
+  let year = prompt(addNewBookHeader + "\nกรุณากรอก ปีที่พิมพ์");
+  if (year !== null) {
+    while (!year.match("^[1-9].+[0-9]*$")) {
+      alert("จำเป็นต้องกรอก ปีที่พิมพ์ *เป็นตัวเลข ให้ถูกต้อง");
+      year = prompt(addNewBookHeader + "\nกรุณากรอก ปีที่พิมพ์");
+    }
+  } else {
+    main();
+  }
+
+  let price = prompt(addNewBookHeader + "\nกรุณากรอก ราคา");
+  if (price !== null) {
+    while (!price.match("^[1-9][0-9]*$")) {
+      alert("จำเป็นต้องกรอก ราคา *เป็นตัวเลข ให้ถูกต้อง");
+      price = prompt(addNewBookHeader + "\nกรุณากรอก ราคา");
+    }
+  } else {
+    main();
+  }
 
   const confirmation = confirm(
-    `คุณต้องการเพิ่มหนังสือ \nชื่อ: ${name} \nโดย: ${auther} \nของปี: ${year} \nราตา: ${price}`
+    `คุณต้องการเพิ่มหนังสือ \nชื่อ: ${name.trim()} \nโดย: ${auther.trim()} \nของปี: ${year} \nราตา: ${price}`
   );
 
   if (confirmation) {
