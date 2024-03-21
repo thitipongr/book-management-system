@@ -1,46 +1,47 @@
 let bookshelf = [];
 
+const validateInput = (header, field, input) => {
+  if (input !== null) {
+    switch (field) {
+      case "ชื่อหนังสือ":
+      case "ผู้เขียน": {
+        while (!input.match("^.+$")) {
+          alert("จำเป็นต้องกรอก " + field);
+          input = prompt(header + "\nกรุณากรอก " + field);
+          if (input === null) return main();
+        }
+        break;
+      }
+      case "ปีที่พิมพ์":
+      case "ราคา": {
+        while (!input.match("^[1-9][0-9]*$")) {
+          alert(`จำเป็นต้องกรอก ${field} *เป็นตัวเลข ให้ถูกต้อง`);
+          input = prompt(header + "\nกรุณากรอก " + field);
+          if (input === null) return main();
+        }
+        break;
+      }
+    }
+  } else {
+    return main();
+  }
+
+  return input;
+};
+
 const addNewBook = () => {
   const addNewBookHeader = "เพิ่มหนังสือใหม่";
   let name = prompt(addNewBookHeader + "\nกรุณากรอก ชื่อหนังสือ");
-  if (name !== null) {
-    while (name === "") {
-      alert("จำเป็นต้องกรอก ชื่อหนังสือ");
-      name = prompt(addNewBookHeader + "\nกรุณากรอก ชื่อหนังสือ");
-    }
-  } else {
-    main();
-  }
+  name = validateInput(addNewBookHeader, "ชื่อหนังสือ", name);
 
   let auther = prompt(addNewBookHeader + "\nกรุณากรอก ผู้เขียน");
-  if (auther !== null) {
-    while (auther === "") {
-      alert("จำเป็นต้องกรอก ผู้เขียน");
-      auther = prompt(addNewBookHeader + "\nกรุณากรอก ผู้เขียน");
-    }
-  } else {
-    main();
-  }
+  auther = validateInput(addNewBookHeader, "ผู้เขียน", auther);
 
   let year = prompt(addNewBookHeader + "\nกรุณากรอก ปีที่พิมพ์");
-  if (year !== null) {
-    while (!year.match("^[1-9].+[0-9]*$")) {
-      alert("จำเป็นต้องกรอก ปีที่พิมพ์ *เป็นตัวเลข ให้ถูกต้อง");
-      year = prompt(addNewBookHeader + "\nกรุณากรอก ปีที่พิมพ์");
-    }
-  } else {
-    main();
-  }
+  year = validateInput(addNewBookHeader, "ปีที่พิมพ์", year);
 
   let price = prompt(addNewBookHeader + "\nกรุณากรอก ราคา");
-  if (price !== null) {
-    while (!price.match("^[1-9][0-9]*$")) {
-      alert("จำเป็นต้องกรอก ราคา *เป็นตัวเลข ให้ถูกต้อง");
-      price = prompt(addNewBookHeader + "\nกรุณากรอก ราคา");
-    }
-  } else {
-    main();
-  }
+  price = validateInput(addNewBookHeader, "ราคา", price);
 
   const confirmation = confirm(
     `คุณต้องการเพิ่มหนังสือ \nชื่อ: ${name.trim()} \nโดย: ${auther.trim()} \nของปี: ${year} \nราตา: ${price}`
